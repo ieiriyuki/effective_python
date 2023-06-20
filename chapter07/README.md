@@ -298,3 +298,51 @@ for i in range(5):
     print()
     print(grid)
 ```
+
+## 57 オンデマンドファンアウトのために新たなThreadインスタンスを作るのを避ける
+
+- コードとしては56を引き続き使用
+- 問題点
+    - スレッドが互いに安全に協調するためにLockが必要で、保守性が低い
+    - スレッドごとに8MBのメモリが必要になる
+    - スレッドの開始とコンテキストスイッチにより、速度が下がる
+- スレッド以外のアプローチを検討する
+
+```py
+class LockGrid(Grid):
+    def __init__(self, height, width):
+        super().__init__(height, width)
+        self.lock = Lock()
+
+    def __str__(self):
+        with self.lock:
+            return super().__str__()
+
+    def get(self, y, x):
+        with self.lock:
+            return super().get(y, x)
+
+    def set(self, y, x, state):
+        with self.lock:
+            return super().set(y, x, state)
+
+# 中略
+
+def simulate(grid):
+    next_grid = LockGrid(grid.height, grid.width)
+
+    threads = []
+    for y in range(grid.height):
+        for x in range(grid.width):
+            args = (y, x, grid.get, next_grid.set)
+            th = Thread(target=step_cell, args=args)
+            th.start()
+            threads.append(th)
+
+    for th in threads: th.join()
+    return next_grid
+```
+
+## 58 並行性のためにQueueを使うと、どのようにリファクタリングが必要になるかを理解する
+
+
