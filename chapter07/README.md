@@ -345,4 +345,21 @@ def simulate(grid):
 
 ## 58 並行性のためにQueueを使うと、どのようにリファクタリングが必要になるかを理解する
 
+- [code58.py](./code58.py) を参照
+- Queueでファンアウトとファンインの問題を解くことは可能だが、オーバーヘッドが大きい
+- ThreadPoolExcecutorやコルーチンを検討すべき
 
+## 59 並行性のためにスレッドが必要な時にはThreadPoolExecutorを考える
+
+ThreadとQueueのいいとこどり
+
+- [code59.py](./code59.py) を参照
+- submitメソッドで返されるFutureインスタンスでresultメソッドを呼び出すと例外が自動的に呼び出し元に伝播される
+- ThreadPoolExecutorでstep_cellおよびその内部が並行実行している
+- 非同期解が使えない状況 (ファイルIO) では良いが、より良い方法がある
+
+## 60 コルーチンで高度な並行IOを達成する
+
+- [code60.py](./code60.py) を参照
+- asyncキーワードで定義される関数をコルーチンと言う
+- 呼び出し側はawaitキーワードを使う
