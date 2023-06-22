@@ -372,3 +372,14 @@ ThreadとQueueのいいとこどり
 
 ## 62 スレッドとコルーチンを組み合わせてasyncioへの移行を楽にする
 
+- asyncioイベントループのawait可能なrun_in_executorメソッドは、コルーチンでThreadPoolExecutorプールの同期関数を実行できる。
+- asyncioイベントループのrun_until_completeメソッドは、同期コードでコルーチンを終わるまで実行できる。asyncio.run_coroutine_threadsafe関数は、スレッド境界を超えて同じ機能を提供する。
+
+## 63 応答性を最大化するためにasyncioイベントループのブロッキングを避ける
+
+- [code63.py](./code63.py) を参照
+- コルーチンでシステムコールをすると、応答性を低めることがある
+- asyncio.run(foo, debug=True) で応答性を下げる要因を検知できる
+
+## 64 本当の並列性のためにconcurrent.futuresを考える
+
