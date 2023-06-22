@@ -383,3 +383,7 @@ ThreadとQueueのいいとこどり
 
 ## 64 本当の並列性のためにconcurrent.futuresを考える
 
+- ProcessPoolExecutorでCPUコアを使って並列化できる
+- multiprocessingの全ての部品を最初から使うのは避けるべき
+- ThreadPoolExecutorから始めるのを検討する
+- ProcessPoolExecutor, multiprocessingへと進む
