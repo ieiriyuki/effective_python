@@ -1,4 +1,4 @@
-## Chapter 7 並行性と並列性
+# Chapter 7 並行性と並列性
 
 ## 52 subprocessを使って子プロセスを管理する
 
