@@ -208,4 +208,43 @@ print(result)
 
 ## 81 メモリの私用とリークを理解するにはtracemallocを使う
 
-- CPythonのメモリ管理は参照カウント法を使う
+CPythonのメモリ管理は参照カウント法を使う
+
+```py
+import os, gc, tracemalloc
+
+tracemalloc.start(10)
+time1 = tracemalloc.take_snapshot()
+
+class MyObject:
+    def __init__(self):
+        self.data = os.urandom(100)
+
+def get_data():
+    values = []
+    for _ in range(10):
+        obj = MyObject()
+        values.append(obj)
+    return values
+
+def run():
+    deep_values = []
+    for _ in range(10):
+        deep_values.append(get_data())
+    return deep_values
+
+hold_reference = run()
+time2 = tracemalloc.take_snapshot()
+stats = time2.compare_to(time1, "lineno")
+for stat in stats[:3]:
+    print(stat)
+top = stats[0]
+print("Biigest offender is")
+print("\n".join(top.traceback.format()))
+# **/main.py:8: size=23.0 KiB (+23.0 KiB), count=297 (+297), average=79 B
+# **/main.py:13: size=5208 B (+5208 B), count=101 (+101), average=52
+# **/main.py:6: size=1808 B (+1808 B), count=8 (+8), average=226 B
+# Biigest offender is
+#   File "C:\Users\ieiriyuki\Programs\effective_python\main.py", line 8
+#     self.data = os.urandom(100)
+```
