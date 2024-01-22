@@ -1,7 +1,5 @@
 name: python lint and test
-on:
-  push:
-    branches: ["*"]
+on: [push]
 
 jobs:
   build:
