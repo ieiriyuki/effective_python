@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "test"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+flake8 = "^7.0.0"
+isort = "^5.13.2"
+black = "^23.12.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = [
+    "tests",
+]
+pythonpath = ["."]
+
+[tool.black]
+line-length = 80
